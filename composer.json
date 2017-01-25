@@ -1,0 +1,24 @@
+{
+  "name": "asg/es_query_builder",
+  "description": "Asg Elastic Search Query builder",
+  "keywords": ["Elastic Search","Query builder"],
+  "license": "MIT",
+  "type": "library",
+  "require": {
+    "php": ">=5.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.8.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Asg\\" : "src/Asg/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Abed Ghazaleh",
+      "email": "abed.gh@gmail.com"
+    }
+  ]
+}
