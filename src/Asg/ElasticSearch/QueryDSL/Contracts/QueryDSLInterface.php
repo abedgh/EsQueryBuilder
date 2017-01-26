@@ -12,6 +12,10 @@ namespace Asg\ElasticSearch\QueryDSL\Contracts;
 interface QueryDSLInterface {
 
     /**
+     * @return string;
+     * */
+    public function getName();
+    /**
      * @description : Return Json object
      * @return string;
      * */

@@ -8,10 +8,23 @@
 
 namespace Asg\ElasticSearch\Query;
 
+use Asg\ElasticSearch\QueryDSL\Contracts\QueryDSLInterface;
+
 class Query {
 
 
-    protected $queryCollection = [];
+    protected $queryDSL = null;
 
 
+    function __construct(QueryDSLInterface $queryDSL){
+        $this->queryDSL = $queryDSL;
+    }
+
+    public function raw(){
+        return json_encode(['query' => json_decode($this->queryDSL->raw())]);
+    }
+
+    public function get(){
+        return ['query'=> $this->queryDSL->get()];
+    }
 }
