@@ -11,7 +11,10 @@ class QueryTest extends PHPUnit_Framework_TestCase{
 
     /** @test */
     public function create_instance_of_query_and_query_bool(){
-        $query = new \Asg\ElasticSearch\Query\Query();
+
+        $mock = $this->getMock(\Asg\ElasticSearch\QueryDSL\Contracts\QueryDSLInterface::class);
+
+        $query = new \Asg\ElasticSearch\Query\Query($mock);
         $this->assertInstanceOf(\Asg\ElasticSearch\Query\Query::class,$query);
 
         $queryBool = new \Asg\ElasticSearch\Query\QueryBool();
