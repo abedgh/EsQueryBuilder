@@ -8,19 +8,18 @@
 
 namespace Asg\ElasticSearch\Schema\Fluent;
 
+use Asg\ElasticSearch\Schema\Contracts\BlueprintSettingInterface;
 
-class BlueprintSetting {
+class BlueprintSetting implements BlueprintSettingInterface{
 
-    protected $noOfShards = 1;
-    protected $noOfReplicas = 0;
-    protected $dynamic = false;
+    protected $attributes = [];
     /**
      * @param int $noOfShards;
      * @return BlueprintSetting;
      * */
     public function shards($noOfShards){
-        $this->noOfShards = $noOfShards;
-        //return $this;
+        $this->attributes['number_of_shards'] = $noOfShards;
+        return $this;
     }
 
     /**
@@ -28,25 +27,28 @@ class BlueprintSetting {
      * @return BlueprintSetting;
      * */
     public function replicas($noOfReplicas){
-        $this->noOfReplicas = $noOfReplicas;
-        //return $this;
+        $this->attributes['number_of_replicas'] = $noOfReplicas;
+        return $this;
     }
     /**
      * @param boolean $bool;
      * @return BlueprintSetting;
      * */
     public function isDynamic($bool){
-        $this->dynamic = $bool;
-        //return $this;
+        $this->attributes['index.mapper.dynamic'] = $bool;
+        return $this;
     }
     /**
-     * @return array;
+     * @return string[];
     */
     public function get(){
-        return [
-            'number_of_shards' => $this->noOfShards,
-            'number_of_replicas' => $this->noOfReplicas,
-            'index.mapper.dynamic' => $this->dynamic,
-        ];
+        if (count($this->attributes) == 0) {
+            return [
+                'number_of_shards' => 1,
+                'number_of_replicas' => 0,
+                'index.mapper.dynamic' => false,
+            ];
+        }
+        return $this->attributes;
     }
 }

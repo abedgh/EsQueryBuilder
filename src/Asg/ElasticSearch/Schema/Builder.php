@@ -24,7 +24,7 @@ class Builder {
     public function create($index, Closure $callback){
         $blueprint = $this->createBlueprint($index,$callback);
         $blueprint->create();
-        //$callback($blueprint);
+        $callback($blueprint);
         $this->buildBlueprint($blueprint);
     }
     /**

@@ -9,18 +9,22 @@
 namespace Asg\ElasticSearch\Schema;
 
 use Closure;
+use Asg\ElasticSearch\Schema\Fluent\BlueprintMapping;
 use Asg\ElasticSearch\Schema\Fluent\BlueprintSetting;
+use Asg\ElasticSearch\Schema\Contracts\BlueprintSettingInterface;
 
 class Blueprint {
 
+    public static $counter = 0 ;
     protected $index = null;
 
     protected $collection = [];
     /**
-     * @var BlueprintSetting[]
+     * @var BlueprintSettingInterface[]
      * */
     protected $settings = [];
 
+    protected $mappings = [];
     /**
      * Create a new schema blueprint.
      * @param $index
@@ -28,6 +32,8 @@ class Blueprint {
      */
     public function __construct($index, Closure $callback = null)
     {
+        self::$counter++;
+        var_dump(self::$counter);
         $this->index = trim($index);
         if (!is_null($callback)) {
             $callback($this);
@@ -37,9 +43,14 @@ class Blueprint {
 
     }
     public function build(){
+
+        $s = [];
         foreach($this->settings as $setting){
-            print_r($setting->get());
+            $s = array_merge($s,$setting->get());
+
         }
+        var_dump($s);
+        var_dump(self::$counter);
         //var_dump($this->settings);
     }
     /**
@@ -48,5 +59,13 @@ class Blueprint {
     public function settings(){
         $this->settings[] = $setting = new BlueprintSetting();
         return $setting;
+    }
+    /**
+     * @param string $docType;
+     * @return BlueprintMapping
+     * */
+    public function mappings($docType){
+        $this->mappings[$docType] = $mapping = new BlueprintMapping($docType);
+        return $mapping;
     }
 }
