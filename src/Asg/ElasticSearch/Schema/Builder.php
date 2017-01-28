@@ -20,28 +20,18 @@ class Builder {
     {
         return new static();
     }
-
+    /**
+     * @param string $index;
+     * @param Closure $callback;
+     * @return string[];
+     * */
     public function create($index, Closure $callback){
         $blueprint = $this->createBlueprint($index,$callback);
-        $blueprint->create();
-        $callback($blueprint);
-        $this->buildBlueprint($blueprint);
-    }
-    /**
-     * @return array;
-     * */
-    public function build(){
-
-    }
-    /**
-     * @return string;
-     * */
-    public function buildRaw(){
-
+        return $this->buildBlueprint($blueprint);
     }
 
     protected function buildBlueprint(Blueprint $blueprint){
-        $blueprint->build();
+        return $blueprint->build();
     }
     /**
      * @param string $index;

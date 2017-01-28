@@ -8,9 +8,9 @@
 
 namespace Asg\ElasticSearch\Schema\Fluent;
 
-use Asg\ElasticSearch\Schema\Contracts\BlueprintSettingInterface;
+use Asg\ElasticSearch\Schema\Contracts\BlueprintFluentInterface;
 
-class BlueprintSetting implements BlueprintSettingInterface{
+class BlueprintSetting implements BlueprintFluentInterface{
 
     protected $attributes = [];
     /**

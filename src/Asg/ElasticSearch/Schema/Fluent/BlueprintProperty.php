@@ -9,9 +9,9 @@
 namespace Asg\ElasticSearch\Schema\Fluent;
 
 
-use Asg\ElasticSearch\Schema\Contracts\BlueprintSettingInterface;
+use Asg\ElasticSearch\Schema\Contracts\BlueprintFluentInterface;
 
-class BlueprintProperty implements BlueprintSettingInterface {
+class BlueprintProperty implements BlueprintFluentInterface {
 
     protected $attributes = [];
 
@@ -141,6 +141,19 @@ class BlueprintProperty implements BlueprintSettingInterface {
         $this->addField($field,'completion',$attributes);
         return $this;
     }
+    /**
+     * @param string $field;
+     * @param string[] $attributes;
+     * @return BlueprintProperty;
+     * */
+    public function custom($field,array $attributes){
+        if (isset($attributes['type']) && $attributes['type']!= ''){
+            $type = $attributes['type'];
+            unset($attributes['type']);
+            $this->addField($field,$type,$attributes);
+        }
+        return $this;
+    }
 
     protected function addField($field,$type,$attributes){
         $attributes = array_merge(['type' => $type],$attributes);
@@ -152,6 +165,6 @@ class BlueprintProperty implements BlueprintSettingInterface {
      * */
     public function get()
     {
-
+        return $this->attributes;
     }
 }

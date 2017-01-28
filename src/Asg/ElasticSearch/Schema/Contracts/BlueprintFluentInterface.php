@@ -9,7 +9,7 @@
 namespace Asg\ElasticSearch\Schema\Contracts;
 
 
-interface BlueprintSettingInterface {
+interface BlueprintFluentInterface {
     /**
      * @return string[];
      * */

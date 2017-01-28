@@ -11,20 +11,20 @@ namespace Asg\ElasticSearch\Schema;
 use Closure;
 use Asg\ElasticSearch\Schema\Fluent\BlueprintMapping;
 use Asg\ElasticSearch\Schema\Fluent\BlueprintSetting;
-use Asg\ElasticSearch\Schema\Contracts\BlueprintSettingInterface;
+use Asg\ElasticSearch\Schema\Contracts\BlueprintFluentInterface;
 
 class Blueprint {
 
-    public static $counter = 0 ;
     protected $index = null;
-
-    protected $collection = [];
     /**
-     * @var BlueprintSettingInterface[]
+     * @var BlueprintFluentInterface[]
      * */
     protected $settings = [];
-
+    /**
+     * @var BlueprintFluentInterface[]
+     * */
     protected $mappings = [];
+
     /**
      * Create a new schema blueprint.
      * @param $index
@@ -32,26 +32,28 @@ class Blueprint {
      */
     public function __construct($index, Closure $callback = null)
     {
-        self::$counter++;
-        var_dump(self::$counter);
         $this->index = trim($index);
         if (!is_null($callback)) {
             $callback($this);
         }
     }
-    public function create(){
-
-    }
+    /**
+     * @return string[];
+     * */
     public function build(){
-
-        $s = [];
-        foreach($this->settings as $setting){
-            $s = array_merge($s,$setting->get());
-
-        }
-        var_dump($s);
-        var_dump(self::$counter);
-        //var_dump($this->settings);
+        return [
+            'index' =>$this->index,
+            'body'  => [
+                'settings' => $this->getSettings(),
+                'mappings' => $this->getMappings(),
+            ]
+        ];
+    }
+    /**
+     * @return string;
+     * */
+    public function buildRaw(){
+        return json_encode($this->build());
     }
     /**
      * @return BlueprintSetting;
@@ -65,7 +67,31 @@ class Blueprint {
      * @return BlueprintMapping
      * */
     public function mappings($docType){
-        $this->mappings[$docType] = $mapping = new BlueprintMapping($docType);
+        $this->mappings[$docType][] = $mapping = new BlueprintMapping($docType);
         return $mapping;
+    }
+    /**
+     * @return string[];
+     * @internal BlueprintFluentInterface $item;
+     * */
+    protected function getMappings(){
+        $mappings = [];
+        foreach($this->mappings as $docType=>$mapping){
+            $mappings[$docType] = [];
+            foreach($mapping as $item) {
+                $mappings[$docType] = array_merge($mappings[$docType], $item->get());
+            }
+        }
+        return $mappings;
+    }
+    /**
+     * @return string[];
+     * */
+    protected function getSettings(){
+        $settings = [];
+        foreach($this->settings as $setting){
+            $settings = array_merge($settings,$setting->get());
+        }
+        return $settings;
     }
 }
