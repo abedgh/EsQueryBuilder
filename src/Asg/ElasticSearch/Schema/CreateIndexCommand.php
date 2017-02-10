@@ -11,10 +11,10 @@ namespace Asg\ElasticSearch\Schema;
 use Closure;
 use Asg\ElasticSearch\Schema\Contracts\BuilderCommandInterface;
 
-class BuilderCreateCommand implements BuilderCommandInterface{
+class CreateIndexCommand implements BuilderCommandInterface{
 
-    protected $builder;
-
+    protected $index;
+    protected $callback;
     /**
      * @param $index
      * @param callable $callback
@@ -23,7 +23,7 @@ class BuilderCreateCommand implements BuilderCommandInterface{
         if (!is_null($callback) && $callback instanceof Closure){
             $this->callback = $callback;
         }
-        $this->index = $index;
+        $this->index = trim($index);
     }
     /**
      * @return string[];

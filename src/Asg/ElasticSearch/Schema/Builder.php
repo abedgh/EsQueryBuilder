@@ -27,9 +27,19 @@ class Builder {
      * @return Builder;
      * */
     public static function create($index, Closure $callback){
-        return new static(new BuilderCreateCommand($index,$callback));
+        return new static(new CreateIndexCommand($index,$callback));
 
     }
+    /**
+     * @access: static
+     * @param string $index;
+     * @return Builder;
+     * */
+    public static function delete($index){
+        return new static(new DeleteIndexCommand($index));
+    }
+
+
     /**
      * @return string[];
      * */
