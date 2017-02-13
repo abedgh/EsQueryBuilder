@@ -41,13 +41,19 @@ class Blueprint {
      * @return string[];
      * */
     public function build(){
-        return [
+
+        $build = [
             'index' =>$this->index,
-            'body'  => [
-                'settings' => $this->getSettings(),
-                'mappings' => $this->getMappings(),
-            ]
         ];
+        $settings = $this->getSettings();
+        $mappings = $this->getMappings();
+        if (count($settings) > 0){
+            $build['body']['settings'] = $settings;
+        }
+        if (count($mappings) > 0){
+            $build['body']['mappings'] = $mappings;
+        }
+        return $build;
     }
     /**
      * @return string;
